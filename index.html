@@ -72,7 +72,7 @@
         /* --- STYLES FROM CODE 3 (Canvas) --- */
         #trailCanvas { position: absolute; z-index: 5; pointer-events: none; }
 
-        .logo-img { width: 140px; height: auto; z-index: 10; position: absolute; }
+        .logo-img { width: 120px; height: auto; z-index: 10; position: absolute; }
 
         @keyframes spin {
             0% { transform: rotate(0deg); }
@@ -132,7 +132,7 @@
             else if (num === 3) {
                 // CODE 3 Logic (Canvas)
                 display.innerHTML = `
-                    <img src="${logoSrc}" class="logo-img" style="width:170px;">
+                    <img src="${logoSrc}" class="logo-img" style="width:120px;">
                     <canvas id="trailCanvas"></canvas>
                 `;
                 initCanvas();
@@ -184,4 +184,5 @@
         loadVariant(2);
     </script>
 </body>
+
 </html>
