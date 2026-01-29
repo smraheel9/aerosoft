@@ -3,81 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eduxmart Variant Switcher</title>
+    <title>Aerotrack Official Loader</title>
     <style>
         :root {
-            --brand-red: #a6251c;
-            --white: #ffffff;
+            
+            --bg-beige: #E3D1A5; 
+            --brand-brown: #5C4033; 
         }
 
         body, html {
             margin: 0; padding: 0;
             width: 100%; height: 100%;
-            background-color: var(--brand-red);
-            font-family: Arial, sans-serif;
+            background-color: var(--bg-beige);
+            font-family: 'Times New Roman', Times, serif; 
             overflow: hidden;
         }
 
-        /* Container for Switchable Content */
         #main-display {
             width: 100%;
             height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            position: relative;
         }
 
-        /* Navigation Buttons UI */
-        .variant-controls {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 15px;
-            z-index: 1000000;
-        }
-
-        .btn-switch {
-            padding: 12px 25px;
-            border: 2px solid white;
-            background: transparent;
-            color: white;
-            cursor: pointer;
-            font-weight: bold;
-            text-transform: uppercase;
-            border-radius: 5px;
-            transition: 0.3s;
-        }
-
-        .btn-switch:hover {
-            background: white;
-            color: var(--brand-red);
-        }
-
-        /* --- STYLES FROM CODE 1 (CSS) --- */
-        .loader-circle-css {
+        
+        .logo-img { 
+            width: 80px; 
+            height: auto; 
             position: absolute;
-            border: 5px solid rgba(255, 255, 255, 0.15); 
-            border-top: 5px solid #ffffff; 
-            border-radius: 50%;
-            width: 160px; height: 160px;
-            animation: spin 2.2s linear infinite;
+            z-index: 10;
+            
+            filter: brightness(0) saturate(100%) invert(23%) sepia(18%) saturate(1335%) hue-rotate(338deg) brightness(96%) contrast(90%);
         }
 
-        /* --- STYLES FROM CODE 2 (SVG) --- */
-        .orbit-svg { width: 200px; height: 200px; animation: spin 3s linear infinite; }
-        .arrow-head, .dot { fill: var(--white); }
+        
+        .spinner-box {
+            width: 240px;
+            height: 240px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
 
-        /* --- STYLES FROM CODE 3 (Canvas) --- */
-        #trailCanvas { position: absolute; z-index: 5; pointer-events: none; }
+        
+        .loader-svg {
+            width: 160px;
+            height: 160px;
+            
+            animation: rotateAerospace 2.2s linear infinite; 
+        }
 
-        .logo-img { width: 100px; height: auto; z-index: 10; position: absolute; }
+        
+        .track-faint {
+            fill: none;
+            stroke: rgba(92, 64, 51, 0.15); 
+            stroke-width: 1.5;
+        }
 
-        @keyframes spin {
+        
+        .track-trail {
+            fill: none;
+            stroke: url(#tailGradient); 
+            stroke-width: 3;
+            stroke-linecap: round; 
+        }
+
+        
+        .arrow-head {
+            fill: var(--brand-brown);
+        }
+
+        
+        .brand-container {
+            margin-top: 10px;
+            text-align: center;
+            color: var(--brand-brown);
+            z-index: 20;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .text-main {
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .text-sub {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+
+        
+        @keyframes rotateAerospace {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        
+        .controls { position: fixed; bottom: 20px; z-index: 100; opacity: 0.5; }
+        .controls:hover { opacity: 1; }
+        button { cursor: pointer; padding: 5px 10px; }
+
     </style>
 </head>
 <body>
@@ -85,104 +125,48 @@
     <div id="main-display">
         </div>
 
-    <div class="variant-controls">
-        <button class="btn-switch" onclick="loadVariant(1)">Variant 1</button>
-        <button class="btn-switch" onclick="loadVariant(2)">Variant 2</button>
-        <button class="btn-switch" onclick="loadVariant(3)">Variant 3</button>
+    <div class="controls">
+        <button onclick="loadVariant(1)">Reload Animation</button>
     </div>
 
     <script>
         const display = document.getElementById('main-display');
-        let canvasInterval = null;
+        const logoSrc = "https://sample.eduxmart.com/wp-content/uploads/2026/01/Aero-logo-draw-01.png";
 
         function loadVariant(num) {
-            // Clear existing intervals or animations
-            if (canvasInterval) cancelAnimationFrame(canvasInterval);
-            display.innerHTML = '';
-
-            const logoSrc = "https://sample.eduxmart.com/wp-content/uploads/2026/01/Aero-logo-draw-01.png";
-
-            if (num === 1) {
-                // CODE 1 Logic
-                display.innerHTML = `
+            display.innerHTML = `
+                <div class="spinner-box">
                     <img src="${logoSrc}" class="logo-img">
-                    <div class="loader-circle-css"></div>
-                `;
-            } 
-            else if (num === 2) {
-                // CODE 2 Logic (SVG)
-                display.innerHTML = `
-                    <img src="${logoSrc}" class="logo-img" style="width:100px;">
-                    <svg class="orbit-svg" viewBox="0 0 200 200">
-                        <g transform="rotate(0, 100, 100)">
-                            <path class="arrow-head" d="M110,20 L98,14 L98,26 Z" />
-                            <circle class="dot" cx="88" cy="22" r="3" opacity="0.8" />
-                            <circle class="dot" cx="78" cy="26" r="2.2" opacity="0.5" />
-                            <circle class="dot" cx="69" cy="32" r="1.5" opacity="0.2" />
-                        </g>
-                        <g transform="rotate(180, 100, 100)">
-                            <path class="arrow-head" d="M110,20 L98,14 L98,26 Z" />
-                            <circle class="dot" cx="88" cy="22" r="3" opacity="0.8" />
-                            <circle class="dot" cx="78" cy="26" r="2.2" opacity="0.5" />
-                            <circle class="dot" cx="69" cy="32" r="1.5" opacity="0.2" />
+                    
+                    <svg class="loader-svg" viewBox="0 0 100 100">
+                        <defs>
+                            <linearGradient id="tailGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#5C4033; stop-opacity:0" />
+                                <stop offset="100%" style="stop-color:#5C4033; stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+
+                        <circle class="track-faint" cx="50" cy="50" r="45" />
+
+                        <g>
+                            <path class="track-trail" 
+                                  d="M 5,50 A 45,45 0 0,1 50,5" 
+                                  fill="none" />
+
+                            <polygon class="arrow-head" points="50,1 58,5 50,9" />
                         </g>
                     </svg>
-                `;
-            } 
-            else if (num === 3) {
-                // CODE 3 Logic (Canvas)
-                display.innerHTML = `
-                    <img src="${logoSrc}" class="logo-img" style="width100px;">
-                    <canvas id="trailCanvas" style="width: 220px;"></canvas>
-                `;
-                initCanvas();
-            }
+                </div>
+
+                <div class="brand-container">
+                    <div class="text-main">Aerotrack</div>
+                    <div class="text-sub">Corporation</div>
+                </div>
+            `;
         }
 
-        function initCanvas() {
-            const canvas = document.getElementById('trailCanvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = 300; canvas.height = 300;
-
-            let angle = 0;
-            const orbitRadius = 140; 
-            const particles = []; 
-
-            function draw() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                const centerX = canvas.width / 2;
-                const centerY = canvas.height / 2;
-
-                [angle, angle + Math.PI].forEach(currentAngle => {
-                    const x = centerX + Math.cos(currentAngle) * orbitRadius;
-                    const y = centerY + Math.sin(currentAngle) * orbitRadius;
-                    particles.push({ x: x, y: y, alpha: 1.0, size: 8 });
-                    
-                    // Draw Head
-                    ctx.beginPath();
-                    ctx.arc(x, y, 8, 0, Math.PI * 2);
-                    ctx.fillStyle = "white";
-                    ctx.fill();
-                });
-
-                for (let i = particles.length - 1; i >= 0; i--) {
-                    const p = particles[i];
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.size * p.alpha, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha * 0.6})`;
-                    ctx.fill();
-                    p.alpha -= 0.05; 
-                    if (p.alpha <= 0) particles.splice(i, 1);
-                }
-                angle += 0.04;
-                canvasInterval = requestAnimationFrame(draw);
-            }
-            draw();
-        }
-
-        // Initialize with Variant 2 (Premium)
-        loadVariant(2);
+        // Initialize
+        loadVariant(1);
     </script>
 </body>
-
 </html>
